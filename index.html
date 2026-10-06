@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Paruro_Online | Componentes electrónicos en Lima</title>
+<meta name="description" content="Venta de resistores, condensadores, bobinas, circuitos integrados, transistores y más. Envíos a todo el Perú.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pcb:#1F3A33;        /* verde máscara de soldadura */
+    --pcb-2:#2C4B43;
+    --ink:#1C2422;
+    --slate:#56625E;
+    --paper:#ECEFEC;
+    --white:#FFFFFF;
+    --line:#C9D0CC;
+    --brass:#A8823E;      /* acento latón */
+    --brass-dk:#8A6A30;
+    --wa:#1E7A4F;
+    --radius-s:4px;
+    --radius-m:10px;
+    --font:'Barlow', 'Segoe UI', Roboto, Arial, sans-serif;
+    --display:'Barlow Condensed', 'Arial Narrow', 'Segoe UI', sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);color:var(--ink);background:var(--paper);line-height:1.6;font-size:17px}
+  img,svg{max-width:100%}
+  a{color:inherit}
+  :focus-visible{outline:3px solid var(--brass);outline-offset:2px}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+  h1,h2,h3{font-family:var(--display);line-height:1.1;font-weight:600}
+
+  /* Cabecera */
+  header{background:var(--pcb);color:var(--white);position:sticky;top:0;z-index:50}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .logo{font-family:var(--display);font-size:1.6rem;font-weight:700;text-decoration:none;display:flex;align-items:center;gap:10px}
+  .logo svg{width:30px;height:30px}
+  .logo span{color:#C9B27E}
+  .nav ul{display:flex;gap:28px;list-style:none}
+  .nav ul a{text-decoration:none;font-weight:500;opacity:.85}
+  .nav ul a:hover{opacity:1;text-decoration:underline;text-underline-offset:5px}
+  .menu-btn{display:none;background:none;border:1px solid #ffffff55;color:#fff;padding:6px 12px;border-radius:var(--radius-s);font:inherit;cursor:pointer}
+
+  /* Hero */
+  .hero{background:var(--pcb);color:var(--white);padding:64px 0 88px;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;
+    background-image:linear-gradient(#ffffff0a 1px,transparent 1px),linear-gradient(90deg,#ffffff0a 1px,transparent 1px);
+    background-size:28px 28px;pointer-events:none}
+  .hero-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center;position:relative}
+  .hero h1{font-size:clamp(2.6rem,5.5vw,4.4rem);font-weight:700;letter-spacing:-.5px}
+  .hero p{margin:20px 0 32px;max-width:52ch;color:#D5DDD9;font-size:1.1rem}
+  .btns{display:flex;gap:14px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:var(--radius-s);font-weight:600;text-decoration:none;border:2px solid transparent;cursor:pointer;font-family:var(--font);font-size:1rem}
+  .btn-brass{background:var(--brass);color:var(--white)}
+  .btn-brass:hover{background:var(--brass-dk)}
+  .btn-ghost{border-color:#ffffff66;color:var(--white);background:transparent}
+  .btn-ghost:hover{border-color:#fff}
+  .resistor-box{background:#183029;border:1px solid #ffffff1f;border-radius:var(--radius-m);padding:28px}
+  .resistor-box figcaption{display:flex;justify-content:space-between;margin-top:18px;font-size:.95rem;color:#C2CCC7}
+  .resistor-box strong{font-family:var(--display);font-size:2rem;color:#fff;font-weight:600}
+  .bands{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .bands button{background:transparent;border:1px solid #ffffff33;color:#D5DDD9;border-radius:20px;padding:4px 12px;font:inherit;font-size:.85rem;cursor:pointer}
+  .bands button[aria-pressed="true"]{background:var(--brass);border-color:var(--brass);color:#fff}
+
+  /* Secciones */
+  section{padding:80px 0}
+  .sec-head{max-width:640px;margin-bottom:40px}
+  .sec-head h2{font-size:clamp(2rem,4vw,2.8rem)}
+  .sec-head p{color:var(--slate);margin-top:10px}
+
+  /* Catálogo */
+  .catalog{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line);background:var(--white)}
+  .item{padding:28px 24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+  .item svg{width:64px;height:32px;stroke:var(--pcb);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+  .item h3{font-size:1.5rem}
+  .item p{color:var(--slate);font-size:.97rem;flex:1}
+  .item a{color:var(--pcb);font-weight:600;text-underline-offset:4px}
+  .item a:hover{color:var(--brass-dk)}
+
+  /* Cómo comprar */
+  .steps-bg{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .steps{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:32px;counter-reset:paso}
+  .steps li{counter-increment:paso;border-top:3px solid var(--pcb);padding-top:18px}
+  .steps li::before{content:"Paso " counter(paso);display:block;font-family:var(--display);color:var(--brass-dk);font-weight:600;font-size:1.05rem}
+  .steps h3{font-size:1.4rem;margin:4px 0 6px}
+  .steps p{color:var(--slate);font-size:.97rem}
+
+  /* Contacto */
+  .contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:56px}
+  .info dl{display:grid;gap:18px;margin-top:8px}
+  .info dt{font-weight:600}
+  .info dd{color:var(--slate)}
+  .info dd a{color:var(--pcb)}
+  form{background:var(--white);border:1px solid var(--line);border-radius:var(--radius-m);padding:32px;display:grid;gap:16px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  label{display:block;font-weight:600;font-size:.95rem;margin-bottom:6px}
+  input,select,textarea{width:100%;padding:11px 12px;border:1px solid #AEB8B3;border-radius:var(--radius-s);font:inherit;color:var(--ink);background:#FAFBFA}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--pcb);border-color:var(--pcb)}
+  textarea{min-height:120px;resize:vertical}
+  .form-btns{display:flex;gap:12px;flex-wrap:wrap}
+  .btn-pcb{background:var(--pcb);color:#fff}
+  .btn-pcb:hover{background:var(--pcb-2)}
+  .btn-wa{background:var(--wa);color:#fff}
+  .btn-wa:hover{background:#17623F}
+  .status{font-size:.95rem;min-height:1.4em}
+  .status.ok{color:var(--wa)} .status.err{color:#9B2C2C}
+
+  footer{background:var(--ink);color:#B9C2BE;padding:36px 0;font-size:.92rem}
+  .foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  footer a{color:#E3E8E5}
+
+  /* Chatbot */
+  .chat-toggle{position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:100;background:var(--pcb);color:#fff;border:none;border-radius:30px;padding:14px 20px;font:600 1rem var(--font);display:flex;align-items:center;gap:10px;cursor:pointer;box-shadow:0 6px 20px #1F3A3355}
+  .chat-toggle:hover{background:var(--pcb-2)}
+  .chat{position:fixed;right:20px;bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:100;width:370px;max-width:calc(100vw - 40px);height:540px;max-height:calc(100vh - 120px);background:var(--white);border:1px solid var(--line);border-radius:var(--radius-m);box-shadow:0 18px 50px #1C242233;display:none;flex-direction:column;overflow:hidden}
+  .chat.open{display:flex;animation:pop .2s ease-out}
+  @keyframes pop{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .chat-head{background:var(--pcb);color:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+  .chat-head strong{font-family:var(--display);font-size:1.25rem;font-weight:600;display:block}
+  .chat-head small{color:#C2CCC7}
+  .chat-head button{background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;line-height:1}
+  .chat-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:#F5F7F6}
+  .msg{max-width:86%;padding:10px 13px;border-radius:12px;font-size:.95rem;line-height:1.45;white-space:pre-line}
+  .msg.bot{background:var(--white);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:3px}
+  .msg.user{background:var(--pcb);color:#fff;align-self:flex-end;border-bottom-right-radius:3px}
+  .msg a{color:var(--pcb);font-weight:600}
+  .quick{display:flex;flex-wrap:wrap;gap:6px}
+  .quick button{background:var(--white);border:1px solid var(--pcb);color:var(--pcb);border-radius:16px;padding:5px 11px;font:500 .85rem var(--font);cursor:pointer;text-align:left}
+  .quick button:hover{background:var(--pcb);color:#fff}
+  .chat-foot{display:flex;border-top:1px solid var(--line)}
+  .chat-foot input{border:none;border-radius:0;background:#fff;padding:14px}
+  .chat-foot input:focus{outline:none}
+  .chat-foot button{background:var(--brass);color:#fff;border:none;padding:0 18px;font:600 .95rem var(--font);cursor:pointer}
+
+  @media (max-width:900px){
+    .hero-grid,.contact-grid{grid-template-columns:1fr}
+    .steps{grid-template-columns:1fr 1fr}
+    .nav ul{display:none;position:absolute;top:68px;left:0;right:0;background:var(--pcb);flex-direction:column;padding:16px 24px;gap:14px}
+    .nav ul.show{display:flex}
+    .menu-btn{display:block}
+  }
+  @media (max-width:560px){
+    .steps,.row{grid-template-columns:1fr}
+    section{padding:56px 0}
+    .chat-toggle span{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="#inicio" class="logo" aria-label="Paruro_Online, inicio">
+      <svg viewBox="0 0 30 30" fill="none" stroke="#C9B27E" stroke-width="2"><rect x="7" y="7" width="16" height="16" rx="2"/><path d="M11 7V3M15 7V3M19 7V3M11 27v-4M15 27v-4M19 27v-4M7 11H3M7 15H3M7 19H3M27 11h-4M27 15h-4M27 19h-4"/></svg>
+      Paruro<span>_Online</span>
+    </a>
+    <button class="menu-btn" aria-expanded="false" aria-controls="menu">Menú</button>
+    <ul id="menu">
+      <li><a href="#catalogo">Catálogo</a></li>
+      <li><a href="#comprar">Cómo comprar</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="inicio">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>Componentes electrónicos para tus proyectos, con envío a todo el Perú</h1>
+        <p>Resistores, condensadores, bobinas, circuitos integrados, transistores y más. Atendemos a estudiantes, técnicos e industria desde Lima.</p>
+        <div class="btns">
+          <a class="btn btn-brass" href="#catalogo">Ver catálogo</a>
+          <a class="btn btn-ghost" href="https://wa.me/51998594090?text=Hola%20Paruro_Online%2C%20quisiera%20hacer%20una%20consulta." target="_blank" rel="noopener">Escribir por WhatsApp</a>
+        </div>
+      </div>
+
+      <figure class="resistor-box">
+        <svg id="resistor" viewBox="0 0 400 110" role="img" aria-label="Resistor con código de colores">
+          <line x1="0" y1="55" x2="400" y2="55" stroke="#B7BDBA" stroke-width="5"/>
+          <path d="M90 25 Q100 25 112 32 L288 32 Q300 25 310 25 Q330 25 330 55 Q330 85 310 85 Q300 85 288 78 L112 78 Q100 85 90 85 Q70 85 70 55 Q70 25 90 25Z" fill="#D8C49A" stroke="#B9A47A" stroke-width="1.5"/>
+          <rect class="band" x="100" y="27" width="16" height="56"/>
+          <rect class="band" x="150" y="32" width="16" height="46"/>
+          <rect class="band" x="190" y="32" width="16" height="46"/>
+          <rect class="band" x="280" y="27" width="16" height="56"/>
+        </svg>
+        <figcaption>
+          <span>Código de colores</span>
+          <strong id="rval">4,7 kΩ ±5%</strong>
+        </figcaption>
+        <div class="bands" role="group" aria-label="Elegir valor de ejemplo">
+          <button aria-pressed="false" data-i="0">220 Ω</button>
+          <button aria-pressed="false" data-i="1">1 kΩ</button>
+          <button aria-pressed="true" data-i="2">4,7 kΩ</button>
+          <button aria-pressed="false" data-i="3">10 kΩ</button>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section id="catalogo">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Catálogo</h2>
+        <p>Consulta stock y precio de cualquier línea. Si no ves lo que buscas, pregúntanos: lo conseguimos.</p>
+      </div>
+      <div class="catalog" id="catalogGrid"></div>
+    </div>
+  </section>
+
+  <section id="comprar" class="steps-bg">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Cómo comprar</h2>
+        <p>Un proceso simple, por WhatsApp o correo.</p>
+      </div>
+      <ol class="steps">
+        <li><h3>Consulta</h3><p>Envíanos la lista de componentes con código, valor y cantidad.</p></li>
+        <li><h3>Cotización</h3><p>Te respondemos con precios y disponibilidad, normalmente el mismo día.</p></li>
+        <li><h3>Pago</h3><p>Yape, Plin, transferencia, depósito o efectivo en tienda.</p></li>
+        <li><h3>Entrega</h3><p>Recojo en tienda, delivery en Lima o envío por agencia a provincias.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="contacto">
+    <div class="wrap contact-grid">
+      <div class="info">
+        <div class="sec-head">
+          <h2>Contacto</h2>
+          <p>Déjanos tu pedido o consulta y te responderemos a la brevedad.</p>
+        </div>
+        <dl>
+          <div><dt>WhatsApp</dt><dd><a href="https://wa.me/51998594090" target="_blank" rel="noopener">+51 998 594 090</a></dd></div>
+          <div><dt>Correo</dt><dd><a href="mailto:juancarlosperezpayco@gmail.com">juancarlosperezpayco@gmail.com</a></dd></div>
+          <div><dt>Dirección</dt><dd>Jr. Paruro, Cercado de Lima, Perú</dd></div>
+          <div><dt>Horario</dt><dd>Lunes a sábado, de 9:00 a. m. a 7:00 p. m.</dd></div>
+        </dl>
+      </div>
+
+      <form id="contactForm" novalidate>
+        <div class="row">
+          <div><label for="nombre">Nombre</label><input id="nombre" name="nombre" required autocomplete="name"></div>
+          <div><label for="telefono">Teléfono</label><input id="telefono" name="telefono" type="tel" autocomplete="tel"></div>
+        </div>
+        <div><label for="correo">Correo electrónico</label><input id="correo" name="correo" type="email" required autocomplete="email"></div>
+        <div>
+          <label for="categoria">Categoría</label>
+          <select id="categoria" name="categoria">
+            <option>Consulta general</option>
+            <option>Resistores</option><option>Condensadores</option><option>Bobinas e inductores</option>
+            <option>Circuitos integrados</option><option>Transistores</option><option>Diodos y LEDs</option>
+            <option>Microcontroladores y módulos</option><option>Compra al por mayor</option>
+          </select>
+        </div>
+        <div><label for="mensaje">Mensaje o lista de componentes</label><textarea id="mensaje" name="mensaje" required placeholder="Ej.: 50 resistores de 1 kΩ 1/4 W, 10 transistores BC547, 5 NE555"></textarea></div>
+        <div class="form-btns">
+          <button type="submit" class="btn btn-pcb">Enviar por correo</button>
+          <button type="button" class="btn btn-wa" id="sendWa">Enviar por WhatsApp</button>
+        </div>
+        <p class="status" id="status" role="status"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>© <span id="year"></span> Paruro_Online. Componentes electrónicos, Lima, Perú.</span>
+    <span><a href="https://wa.me/51998594090" target="_blank" rel="noopener">WhatsApp</a> &nbsp;|&nbsp; <a href="mailto:juancarlosperezpayco@gmail.com">Correo</a></span>
+  </div>
+</footer>
+
+<!-- Chatbot -->
+<button class="chat-toggle" id="chatToggle" aria-expanded="false" aria-controls="chat">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>
+  <span>¿Dudas? Chatea</span>
+</button>
+
+<div class="chat" id="chat" role="dialog" aria-label="Asistente de Paruro_Online">
+  <div class="chat-head">
+    <div><strong>Asistente Paruro</strong><small>Respuestas al instante</small></div>
+    <button id="chatClose" aria-label="Cerrar chat">×</button>
+  </div>
+  <div class="chat-body" id="chatBody" aria-live="polite"></div>
+  <form class="chat-foot" id="chatForm">
+    <input id="chatInput" placeholder="Escribe tu pregunta…" autocomplete="off" aria-label="Tu pregunta">
+    <button type="submit">Enviar</button>
+  </form>
+</div>
+
+<script>
+/* ===== Datos de contacto ===== */
+const WHATSAPP = "51998594090";
+const EMAIL = "juancarlosperezpayco@gmail.com";
+const waLink = txt => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(txt)}`;
+
+document.getElementById("year").textContent = new Date().getFullYear();
+
+/* ===== Menú móvil ===== */
+const menuBtn = document.querySelector(".menu-btn"), menu = document.getElementById("menu");
+menuBtn.addEventListener("click", () => {
+  const open = menu.classList.toggle("show");
+  menuBtn.setAttribute("aria-expanded", open);
+});
+menu.querySelectorAll("a").forEach(a => a.addEventListener("click", () => menu.classList.remove("show")));
+
+/* ===== Resistor del hero ===== */
+const colors = {black:"#1b1b1b",brown:"#6B3E1F",red:"#B3302A",orange:"#D9792B",yellow:"#E3C23A",violet:"#6B4C9A",gold:"#B8963E"};
+const values = [
+  {b:["red","red","brown","gold"], t:"220 Ω ±5%"},
+  {b:["brown","black","red","gold"], t:"1 kΩ ±5%"},
+  {b:["yellow","violet","red","gold"], t:"4,7 kΩ ±5%"},
+  {b:["brown","black","orange","gold"], t:"10 kΩ ±5%"}
+];
+const bandEls = document.querySelectorAll("#resistor .band");
+function setResistor(i){
+  values[i].b.forEach((c,k) => bandEls[k].setAttribute("fill", colors[c]));
+  document.getElementById("rval").textContent = values[i].t;
+  document.querySelectorAll(".bands button").forEach(b => b.setAttribute("aria-pressed", b.dataset.i == i));
+}
+document.querySelectorAll(".bands button").forEach(b => b.addEventListener("click", () => setResistor(+b.dataset.i)));
+setResistor(2);
+
+/* ===== Catálogo ===== */
+const catalog = [
+  {n:"Resistores", d:"Carbón y metal film de 1/4 W a 5 W, potenciómetros, trimmers y redes resistivas.", s:'<path d="M2 16h12l3-7 5 14 5-14 5 14 5-14 5 14 3-7h17"/>'},
+  {n:"Condensadores", d:"Cerámicos, electrolíticos, de poliéster y tantalio, en diversas tensiones.", s:'<path d="M2 16h26M28 4v24M36 4v24M36 16h26"/>'},
+  {n:"Bobinas e inductores", d:"Inductores axiales, toroides, choques de RF y transformadores pequeños.", s:'<path d="M2 16h10a5 5 0 0 1 10 0 5 5 0 0 1 10 0 5 5 0 0 1 10 0 5 5 0 0 1 10 0h10"/>'},
+  {n:"Circuitos integrados", d:"Temporizadores, amplificadores operacionales, reguladores, lógica TTL y CMOS.", s:'<rect x="18" y="6" width="28" height="20" rx="2"/><path d="M24 6V2M32 6V2M40 6V2M24 26v4M32 26v4M40 26v4M2 16h16M46 16h16"/>'},
+  {n:"Transistores", d:"Bipolares NPN y PNP, MOSFET, JFET y de potencia como TIP y IRF.", s:'<circle cx="32" cy="16" r="13"/><path d="M2 16h24M26 8v16M26 12l14-8M26 20l14 8M36 26l4 2-1-4"/>'},
+  {n:"Diodos y LEDs", d:"Rectificadores, Zener, Schottky, puentes y LEDs de 3 mm y 5 mm.", s:'<path d="M2 16h22M24 6v20l16-10zM40 6v20M40 16h22"/>'},
+  {n:"Microcontroladores y módulos", d:"Arduino, ESP32, PIC, sensores, relés y módulos de comunicación.", s:'<rect x="14" y="4" width="36" height="24" rx="3"/><rect x="24" y="10" width="16" height="12"/><path d="M2 10h12M2 22h12M50 10h12M50 22h12"/>'},
+  {n:"Accesorios", d:"Protoboards, cables, soldadura, estaño, borneras, zócalos y disipadores.", s:'<rect x="4" y="6" width="56" height="20" rx="2"/><path d="M12 12v0M20 12v0M28 12v0M36 12v0M44 12v0M52 12v0M12 20v0M20 20v0M28 20v0M36 20v0M44 20v0M52 20v0" stroke-width="3.5"/>'}
+];
+document.getElementById("catalogGrid").innerHTML = catalog.map(c => `
+  <article class="item">
+    <svg viewBox="0 0 64 32" aria-hidden="true">${c.s}</svg>
+    <h3>${c.n}</h3>
+    <p>${c.d}</p>
+    <a href="${waLink(`Hola Paruro_Online, quisiera consultar stock y precio de: ${c.n}.`)}" target="_blank" rel="noopener">Consultar stock</a>
+  </article>`).join("");
+
+/* ===== Formulario: correo (FormSubmit) y WhatsApp ===== */
+const form = document.getElementById("contactForm"), statusEl = document.getElementById("status");
+const getData = () => ({
+  nombre: form.nombre.value.trim(), telefono: form.telefono.value.trim(),
+  correo: form.correo.value.trim(), categoria: form.categoria.value, mensaje: form.mensaje.value.trim()
+});
+function validate(d, needEmail){
+  if(!d.nombre){ return "Escribe tu nombre."; }
+  if(needEmail && !/^\S+@\S+\.\S+$/.test(d.correo)){ return "Escribe un correo válido para poder responderte."; }
+  if(!d.mensaje){ return "Escribe tu mensaje o la lista de componentes."; }
+  return "";
+}
+function setStatus(t, ok){ statusEl.textContent = t; statusEl.className = "status " + (ok ? "ok" : "err"); }
+
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  const d = getData(), err = validate(d, true);
+  if(err) return setStatus(err, false);
+  setStatus("Enviando…", true);
+  try{
+    const r = await fetch(`https://formsubmit.co/ajax/${EMAIL}`, {
+      method:"POST", headers:{"Content-Type":"application/json","Accept":"application/json"},
+      body: JSON.stringify({
+        _subject:`Nueva consulta web: ${d.categoria}`, _template:"table", _captcha:"false",
+        Nombre:d.nombre, Telefono:d.telefono || "No indicado", Correo:d.correo, Categoria:d.categoria, Mensaje:d.mensaje
+      })
+    });
+    if(!r.ok) throw new Error();
+    setStatus("Mensaje enviado. Te responderemos pronto a tu correo.", true);
+    form.reset();
+  }catch{
+    // Si falla el envío automático, se abre el programa de correo del visitante
+    const body = `Nombre: ${d.nombre}\nTeléfono: ${d.telefono}\nCorreo: ${d.correo}\nCategoría: ${d.categoria}\n\n${d.mensaje}`;
+    location.href = `mailto:${EMAIL}?subject=${encodeURIComponent("Consulta web: " + d.categoria)}&body=${encodeURIComponent(body)}`;
+    setStatus("Abrimos tu programa de correo para completar el envío.", true);
+  }
+});
+
+document.getElementById("sendWa").addEventListener("click", () => {
+  const d = getData(), err = validate(d, false);
+  if(err) return setStatus(err, false);
+  const txt = `Hola Paruro_Online, soy ${d.nombre}.\nCategoría: ${d.categoria}\n${d.telefono ? "Teléfono: " + d.telefono + "\n" : ""}${d.correo ? "Correo: " + d.correo + "\n" : ""}\n${d.mensaje}`;
+  window.open(waLink(txt), "_blank", "noopener");
+  setStatus("Se abrió WhatsApp con tu mensaje listo para enviar.", true);
+});
+
+/* ===== Chatbot: 10 preguntas básicas ===== */
+const FAQ = [
+  {q:"¿Qué productos venden?", k:["producto","venden","vende","tienen","catalogo","catálogo","componente"],
+   a:"Vendemos resistores, condensadores, bobinas e inductores, circuitos integrados, transistores, diodos y LEDs, microcontroladores (Arduino, ESP32, PIC), módulos, sensores y accesorios como protoboards, cables y soldadura."},
+  {q:"¿Dónde están ubicados?", k:["donde","dónde","ubica","direccion","dirección","tienda","local"],
+   a:"Estamos en Jr. Paruro, Cercado de Lima. También atendemos pedidos en línea con envío a todo el Perú."},
+  {q:"¿Cuál es su horario de atención?", k:["horario","hora","abren","atienden","cierran","domingo"],
+   a:"Atendemos de lunes a sábado de 9:00 a. m. a 7:00 p. m. Por WhatsApp puedes dejarnos tu consulta en cualquier momento y te respondemos en horario de atención."},
+  {q:"¿Hacen envíos a provincias?", k:["envio","envío","envian","envían","provincia","delivery","despacho","agencia"],
+   a:"Sí. En Lima hacemos delivery y fuera de Lima enviamos por agencias como Olva Courier o Shalom. El costo depende del destino y del peso del paquete."},
+  {q:"¿Qué métodos de pago aceptan?", k:["pago","pagar","yape","plin","transferencia","tarjeta","efectivo","deposito","depósito"],
+   a:"Aceptamos Yape, Plin, transferencia o depósito bancario y efectivo en tienda."},
+  {q:"¿Venden al por mayor?", k:["mayor","mayorista","volumen","cantidad","descuento","empresa"],
+   a:"Sí. Para compras por volumen, empresas, institutos o talleres ofrecemos precios especiales. Envíanos tu lista y te preparamos una cotización."},
+  {q:"¿Los productos tienen garantía?", k:["garantia","garantía","defect","falla","devol","cambio"],
+   a:"Todos los productos se revisan antes de despacharse. Si un componente llega defectuoso, avísanos dentro de los 7 días con tu comprobante y lo cambiamos."},
+  {q:"¿Cómo hago un pedido?", k:["pedido","comprar","compra","ordenar","cotiza","cotización","cotizacion"],
+   a:"Envíanos por WhatsApp o por el formulario la lista de componentes con valor, código y cantidad. Te enviamos la cotización, realizas el pago y coordinamos la entrega."},
+  {q:"¿Brindan asesoría técnica?", k:["asesor","ayuda","reemplazo","equivalente","proyecto","recomienda","técnic","tecnic"],
+   a:"Sí. Te ayudamos a encontrar equivalentes y reemplazos de componentes y a elegir piezas para tu proyecto. Cuéntanos qué necesitas."},
+  {q:"¿Cuánto demora la entrega?", k:["demora","tiempo","tarda","llega","cuando","cuándo","entrega","dias","días"],
+   a:"En Lima entregamos en 24 a 48 horas. A provincias, entre 2 y 5 días hábiles según el destino. Los pedidos confirmados antes de las 2:00 p. m. salen el mismo día."}
+];
+
+const chat = document.getElementById("chat"), body = document.getElementById("chatBody"),
+      toggle = document.getElementById("chatToggle"), input = document.getElementById("chatInput");
+let started = false, leadStep = null, lead = {};
+
+function addMsg(html, who="bot"){
+  const m = document.createElement("div");
+  m.className = "msg " + who;
+  if(who === "bot") m.innerHTML = html; else m.textContent = html;
+  body.appendChild(m); body.scrollTop = body.scrollHeight;
+}
+function addQuick(){
+  const box = document.createElement("div");
+  box.className = "quick";
+  FAQ.forEach((f,i) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = f.q;
+    b.onclick = () => answer(i);
+    box.appendChild(b);
+  });
+  const h = document.createElement("button");
+  h.type = "button"; h.textContent = "Hablar con un asesor";
+  h.onclick = startLead;
+  box.appendChild(h);
+  body.appendChild(box); body.scrollTop = body.scrollHeight;
+}
+function answer(i){
+  addMsg(FAQ[i].q, "user");
+  setTimeout(() => {
+    addMsg(FAQ[i].a);
+    addMsg("¿Te ayudo con algo más? Elige otra pregunta o escríbela.");
+    addQuick();
+  }, 350);
+}
+function normalize(t){ return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+function findAnswer(text){
+  const t = normalize(text); let best = -1, score = 0;
+  FAQ.forEach((f,i) => {
+    const s = f.k.filter(k => t.includes(normalize(k))).length;
+    if(s > score){ score = s; best = i; }
+  });
+  return best;
+}
+
+/* Captura de datos para el asesor: se envía a WhatsApp y al correo */
+function startLead(){
+  addMsg("Hablar con un asesor", "user");
+  leadStep = "nombre"; lead = {};
+  setTimeout(() => addMsg("Con gusto. ¿Cuál es tu nombre?"), 300);
+}
+async function handleLead(text){
+  if(leadStep === "nombre"){ lead.nombre = text; leadStep = "contacto"; addMsg(`Gracias, ${text}. ¿Cuál es tu número de celular o correo?`); return; }
+  if(leadStep === "contacto"){ lead.contacto = text; leadStep = "consulta"; addMsg("Perfecto. Escribe tu consulta o la lista de componentes que necesitas."); return; }
+  if(leadStep === "consulta"){
+    lead.consulta = text; leadStep = null;
+    const resumen = `Nueva consulta desde el chat web\nNombre: ${lead.nombre}\nContacto: ${lead.contacto}\nConsulta: ${lead.consulta}`;
+    fetch(`https://formsubmit.co/ajax/${EMAIL}`, {
+      method:"POST", headers:{"Content-Type":"application/json","Accept":"application/json"},
+      body: JSON.stringify({_subject:"Consulta desde el chatbot", _template:"table", _captcha:"false",
+        Nombre:lead.nombre, Contacto:lead.contacto, Consulta:lead.consulta})
+    }).catch(() => {});
+    addMsg(`Listo. Registramos tu consulta y la enviamos a nuestro correo. Para una respuesta más rápida, envíala también por WhatsApp:\n<a href="${waLink(resumen)}" target="_blank" rel="noopener">Enviar por WhatsApp</a>`);
+    addQuick();
+  }
+}
+
+function handleText(text){
+  addMsg(text, "user");
+  if(leadStep){ setTimeout(() => handleLead(text), 300); return; }
+  const i = findAnswer(text);
+  setTimeout(() => {
+    if(i >= 0){ addMsg(FAQ[i].a); addMsg("¿Algo más en lo que te pueda ayudar?"); }
+    else{
+      addMsg(`No tengo una respuesta para eso, pero un asesor puede ayudarte. <a href="${waLink("Hola Paruro_Online, tengo esta consulta: " + text)}" target="_blank" rel="noopener">Escríbenos por WhatsApp</a> o elige una de estas preguntas:`);
+      addQuick();
+    }
+  }, 350);
+}
+
+function openChat(open){
+  chat.classList.toggle("open", open);
+  toggle.setAttribute("aria-expanded", open);
+  if(open && !started){
+    started = true;
+    addMsg("¡Hola! Soy el asistente de Paruro_Online. Elige una pregunta o escribe la tuya.");
+    addQuick();
+  }
+  if(open) input.focus();
+}
+toggle.addEventListener("click", () => openChat(!chat.classList.contains("open")));
+document.getElementById("chatClose").addEventListener("click", () => openChat(false));
+document.addEventListener("keydown", e => { if(e.key === "Escape") openChat(false); });
+document.getElementById("chatForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const t = input.value.trim(); if(!t) return;
+  input.value = ""; handleText(t);
+});
+</script>
+</body>
+</html>
